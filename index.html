@@ -6,35 +6,113 @@
     <meta name="description" content="Semenov.ai specializes in software development and AI integration for businesses. Empowering companies with cutting-edge AI technology. Created by GPT-4.">
     <title>Semenov.ai - Software Development & AI Integration</title>
     <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
+
     <style>
         body {
             background-color: #CCF381;
             margin: 0;
+            padding-top: 100px;
             font-family: 'Roboto', Arial, Helvetica, sans-serif;
             display: flex;
             justify-content: center;
-            align-items: center;
-            height: 100vh;
             flex-direction: column;
+            align-items: center;
         }
 
         .content {
             width: 50%;
+            padding: 0 20px;
+            box-sizing: border-box;
             display: flex;
             flex-direction: column;
-            align-items: center;
+            align-items: flex-start;
         }
 
-        img {
-            max-width: 100%;
+        .logo {
+            max-width: 200px;
             height: auto;
-            margin-bottom: 40px;
+            margin-bottom: 20px;
+        }
+
+        .text-content {
+            width: 100%;
+            margin-bottom: 50px;
+        }
+
+        .text-content h2,
+        .text-content p {
+            text-align: left;
+        }
+
+        .text-content h2 {
+            padding-top: 20px;
+        }
+
+        .footer {
+            width: 100%;
+            background-color: #333;
+            color: white;
+            text-align: center;
+            padding: 10px 0;
+        }
+
+        .fas {
+            padding-right: 16px;
+        }
+
+        ul {
+            list-style-type: lower-greek;
+        }
+
+        a {
+            color: #000;
+            text-decoration: none;
+            border-bottom: 1px dotted;
+            border-bottom-color: #000;
+        }
+        /* Responsive design for mobile */
+        @media screen and (max-width: 600px) {
+            .content {
+                width: 90%;
+            }
         }
     </style>
 </head>
 <body>
     <div class="content">
-        <img src="semenov.svg" alt="Semenov.ai Logo">
+        <img class="logo" src="semenov.svg" alt="Semenov.ai">
+        <div class="text-content">
+            <h2><i class="fas fa-user"></i>About us</h2>
+            <p>Semenov.ai is a leading provider of advanced AI solutions and software development services. We harness the power of artificial intelligence to help businesses transform their operations and achieve new levels of efficiency.</p>
+
+            <h2><i class="fas fa-rocket"></i>Our belief</h2>
+            <p>We believe that AI has the potential to revolutionize various industries, from healthcare and finance to retail and transportation. This belief fuels our commitment to staying at the forefront of AI technology, constantly updating our knowledge and skills to provide the most cutting-edge solutions.</p>
+
+            <h2><i class="fas fa-cog"></i>Our services</h2>
+            <p>Aside from AI, we also offer a range of software development services. Whether you need a full-fledged web application, a mobile app, or custom software, we have the expertise to deliver on time and within budget.</p>
+
+            <h2><i class="fas fa-road"></i>Our approach</h2>
+            <p>We take pride in our customer-centric approach. Our focus is not just on delivering a product or service, but on providing a solution that truly adds value to your business. We strive to build long-term partnerships with our clients, providing ongoing support and improvements as their business evolves.</p>
+
+            <h2><i class="fas fa-landmark"></i>Our experience</h2>
+            <p>Operating from Belgrade, we have worked with clients across the globe. Our international experience enables us to understand and cater to the diverse needs of businesses from different sectors and regions.</p>
+
+            <h2><i class="fas fa-atom"></i>Our promise</h2>
+            <p>Semenov.ai is more than a technology provider. We are your partner in driving innovation and success in this digital age.</p>
+
+            <h2><i class="fas fa-address-book"></i>Contact us</h2>
+            <p>For further information about our services or to discuss a project, feel free to get in touch with us: <br>
+                <ul>
+                    <li>Email: <a href="mailto:vladislav.semenov@gmail.com">vladislav.semenov@gmail.com</a></li>
+                    <li>Phone: <a href="tel:+381629233920">+381 62 9233920</a></li>
+                    <li>Telegram: <a href="https://t.me/VladSemenov">@VladSemenov</a></li>
+                </ul>
+                We look forward to hearing from you.</p>
+        </div>
+    </div>
+    <div class="footer">
+        <p>© 2023 Vladislav Semenov PR Beograd. All Rights Reserved.</p>
     </div>
 </body>
 </html>
