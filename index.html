@@ -20,7 +20,7 @@
             --border: rgba(255,255,255,0.065);
         }
 
-        html { scroll-behavior: smooth; }
+        html { scroll-behavior: smooth; overflow-x: hidden; }
 
         body {
             background: var(--bg);
@@ -28,6 +28,7 @@
             font-family: 'Space Grotesk', sans-serif;
             overflow-x: hidden;
             line-height: 1.6;
+            min-width: 0;
         }
 
         /* ── NAV ── */
@@ -240,7 +241,7 @@
         .tbody {
             padding: 20px 20px 24px; font-family: 'Space Mono', monospace;
             font-size: 10.5px; line-height: 1.85; color: #aaa; overflow-x: auto;
-            white-space: pre;
+            white-space: pre; max-width: 100%;
         }
         .tbody .a { color: var(--accent); }
         .tbody .p { color: var(--accent2); }
@@ -474,7 +475,20 @@
             .cap-arrow { display: none; }
             .svc-tag { display: none; }
             footer { flex-direction: column; text-align: center; }
-            .tbody { font-size: 9px; }
+            /* terminal: scroll horizontally inside its box, never push page */
+            .terminal { max-width: 100%; overflow: hidden; }
+            .tbody { font-size: 9px; overflow-x: auto; }
+            /* bigger body text on mobile */
+            .manifesto-text { font-size: clamp(20px, 5.5vw, 64px); }
+            .cap-body p, .approach-item p, .hai-body p { font-size: 15px; }
+            .cap-body h3 { font-size: clamp(18px, 5vw, 36px); }
+            .hero-sub { font-size: 16px; }
+            .stat-label { font-size: 14px; }
+            .svc-name { font-size: clamp(16px, 4.5vw, 32px); }
+            .stack-item { font-size: 14px; }
+            .cc-value { font-size: 15px; }
+            .hai-body h4 { font-size: 16px; }
+            .arch-left p { font-size: 15px; }
         }
     </style>
 </head>
@@ -963,7 +977,7 @@ window.addEventListener('scroll', () => nav.classList.toggle('scrolled', scrollY
     const innerPts = mkCloud(isMob?70:180, 0, 0.72);
 
     // ── Neural net particles (2D floating, connecting) ──
-    const NN_COUNT = isMob ? 80 : 160;
+    const NN_COUNT = isMob ? 56 : 112;
     const MAX_DIST = 200;
     const nnPts = Array.from({length: NN_COUNT}, () => ({
         x: Math.random(), y: Math.random(),   // normalised 0-1
@@ -1067,7 +1081,7 @@ window.addEventListener('scroll', () => nav.classList.toggle('scrolled', scrollY
                 const dx=(nnPts[i].x-nnPts[j].x)*W, dy=(nnPts[i].y-nnPts[j].y)*H;
                 const d=Math.sqrt(dx*dx+dy*dy);
                 if (d<MAX_DIST) {
-                    const α=((1-d/MAX_DIST)*.65).toFixed(2);
+                    const α=((1-d/MAX_DIST)*.38).toFixed(2);
                     ctx.beginPath();
                     ctx.moveTo(nnPts[i].x*W, nnPts[i].y*H);
                     ctx.lineTo(nnPts[j].x*W, nnPts[j].y*H);
