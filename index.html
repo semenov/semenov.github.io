@@ -3,116 +3,1132 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta name="description" content="Semenov.ai specializes in software development and AI integration for businesses. Empowering companies with cutting-edge AI technology. Created by GPT-4.">
-    <title>Semenov.ai - Software Development & AI Integration</title>
-    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
-
+    <meta name="description" content="Semenov.ai — autonomous AI agents, multi-agent orchestration, and agentic software systems.">
+    <title>Semenov.ai — Autonomous AI Agents</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600;700&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet">
     <style>
+        *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+        :root {
+            --bg: #040404;
+            --fg: #efefef;
+            --accent: #00ffaa;
+            --accent2: #7b61ff;
+            --dim: #0b0b0b;
+            --mid: #5a5a5a;
+            --border: rgba(255,255,255,0.065);
+        }
+
+        html { scroll-behavior: smooth; }
+
         body {
-            background-color: #CCF381;
-            margin: 0;
-            padding-top: 100px;
-            font-family: 'Roboto', Arial, Helvetica, sans-serif;
-            display: flex;
-            justify-content: center;
-            flex-direction: column;
-            align-items: center;
+            background: var(--bg);
+            color: var(--fg);
+            font-family: 'Space Grotesk', sans-serif;
+            overflow-x: hidden;
+            line-height: 1.6;
         }
 
-        .content {
-            width: 50%;
-            padding: 0 20px;
-            box-sizing: border-box;
-            display: flex;
-            flex-direction: column;
-            align-items: flex-start;
+        /* ── NAV ── */
+        nav {
+            position: fixed; top: 0; left: 0; right: 0; z-index: 200;
+            display: flex; justify-content: space-between; align-items: center;
+            padding: 22px 52px;
+            transition: border-color .4s, background .4s, backdrop-filter .4s;
+        }
+        nav.scrolled {
+            border-bottom: 1px solid var(--border);
+            background: rgba(4,4,4,.88);
+            backdrop-filter: blur(24px);
+        }
+        .nav-logo {
+            font-family: 'Space Mono', monospace; font-size: 14px; font-weight: 700;
+            color: var(--fg); text-decoration: none; letter-spacing: -.02em;
+        }
+        .nav-logo span { color: var(--accent); }
+        .nav-link {
+            font-family: 'Space Mono', monospace; font-size: 10px; letter-spacing: .18em;
+            text-transform: uppercase; color: var(--mid); text-decoration: none;
+            padding-bottom: 2px; border-bottom: 1px solid var(--mid);
+            transition: color .2s, border-color .2s;
+        }
+        .nav-link:hover { color: var(--accent); border-color: var(--accent); }
+
+        /* ── HERO ── */
+        #hero {
+            position: relative; height: 100svh; min-height: 620px;
+            display: flex; align-items: center; justify-content: center; overflow: hidden;
+        }
+        #canvas-bg { position: absolute; inset: 0; width: 100%; height: 100%; }
+
+        /* perspective grid overlay */
+        #hero::before {
+            content: '';
+            position: absolute; inset: -100%; z-index: 1;
+            background:
+                linear-gradient(rgba(0,255,170,.025) 1px, transparent 1px),
+                linear-gradient(90deg, rgba(0,255,170,.025) 1px, transparent 1px);
+            background-size: 64px 64px;
+            transform: perspective(500px) rotateX(55deg);
+            transform-origin: center 70%;
+            animation: gridDrift 18s linear infinite;
+            pointer-events: none;
+        }
+        @keyframes gridDrift {
+            from { background-position: 0 0; }
+            to   { background-position: 0 64px; }
         }
 
-        .logo {
-            max-width: 200px;
-            height: auto;
+        /* scanline */
+        .scanline {
+            position: absolute; width: 100%; height: 3px; z-index: 3;
+            background: linear-gradient(to bottom, transparent, rgba(0,255,170,.04), transparent);
+            animation: scan 12s linear infinite; pointer-events: none;
+        }
+        @keyframes scan { from { top: -3px; } to { top: 100%; } }
+
+        .hero-content {
+            position: relative; z-index: 4; text-align: center; padding: 0 24px;
+            pointer-events: none;
+        }
+        .hero-label {
+            font-family: 'Space Mono', monospace; font-size: 10px; letter-spacing: .32em;
+            text-transform: uppercase; color: var(--accent); margin-bottom: 32px;
+            opacity: 0; animation: fadeUp .8s .3s forwards;
+        }
+        .hero-title {
+            font-size: clamp(52px, 11.5vw, 168px);
+            font-weight: 700; line-height: .91; letter-spacing: -.04em; margin-bottom: 36px;
+        }
+        .hero-title .ln1 { display: block; color: var(--fg); opacity: 0; animation: fadeUp .8s .5s forwards; }
+        .hero-title .ln2 { display: block; color: var(--accent); opacity: 0; animation: fadeUp .8s .7s forwards; }
+        .hero-sub {
+            font-size: clamp(15px, 1.8vw, 20px); font-weight: 300; color: var(--mid);
+            max-width: 540px; margin: 0 auto 48px; line-height: 1.8;
+            opacity: 0; animation: fadeUp .8s .9s forwards;
+        }
+        .hero-cta {
+            display: inline-flex; align-items: center; gap: 10px;
+            font-family: 'Space Mono', monospace; font-size: 12px; letter-spacing: .07em;
+            color: #000; background: var(--accent);
+            padding: 17px 34px; text-decoration: none; pointer-events: all;
+            transition: transform .2s, box-shadow .2s;
+            opacity: 0; animation: fadeUp .8s 1.1s forwards;
+        }
+        .hero-cta:hover { transform: translateY(-3px); box-shadow: 0 24px 60px rgba(0,255,170,.22); }
+        .scroll-hint {
+            position: absolute; bottom: 32px; left: 50%; transform: translateX(-50%);
+            z-index: 4; display: flex; flex-direction: column; align-items: center; gap: 10px;
+            opacity: 0; animation: fadeUp .8s 1.7s forwards;
+        }
+        .scroll-hint span {
+            font-family: 'Space Mono', monospace; font-size: 9px;
+            letter-spacing: .26em; text-transform: uppercase; color: var(--mid);
+        }
+        .scroll-line {
+            width: 1px; height: 44px;
+            background: linear-gradient(to bottom, rgba(90,90,90,.6), transparent);
+            animation: scrollPulse 2.4s ease-in-out infinite;
+        }
+
+        /* ── GLITCH ── */
+        .glitch { position: relative; }
+        .glitch::before, .glitch::after {
+            content: attr(data-text); position: absolute; top: 0; left: 0;
+            width: 100%; height: 100%;
+        }
+        .glitch::before {
+            color: var(--accent2);
+            clip-path: polygon(0 0, 100% 0, 100% 34%, 0 34%);
+            animation: g1 10s infinite;
+        }
+        .glitch::after {
+            color: var(--accent);
+            clip-path: polygon(0 66%, 100% 66%, 100% 100%, 0 100%);
+            animation: g2 10s infinite;
+        }
+        @keyframes g1 {
+            0%,90%,100% { transform: none; opacity: 0; }
+            91% { transform: translateX(-6px) skewX(-3deg); opacity: .9; }
+            92% { transform: translateX(4px); opacity: .9; }
+            93% { transform: none; opacity: 0; }
+        }
+        @keyframes g2 {
+            0%,93%,100% { transform: none; opacity: 0; }
+            94% { transform: translateX(6px) skewX(2deg); opacity: .9; }
+            95% { transform: translateX(-3px); opacity: .9; }
+            96% { transform: none; opacity: 0; }
+        }
+
+        /* ── TICKER ── */
+        .ticker {
+            border-top: 1px solid var(--border); border-bottom: 1px solid var(--border);
+            overflow: hidden; padding: 13px 0; background: var(--dim);
+        }
+        .ticker-track {
+            display: flex; animation: tickerScroll 40s linear infinite; white-space: nowrap;
+        }
+        .ticker-item {
+            font-family: 'Space Mono', monospace; font-size: 9px; letter-spacing: .24em;
+            text-transform: uppercase; color: var(--mid); padding: 0 44px;
+            flex-shrink: 0; display: flex; align-items: center; gap: 44px;
+        }
+        .tdot { color: var(--accent); font-size: 7px; }
+
+        /* ── SECTION WRAPPERS ── */
+        .sw { border-top: 1px solid var(--border); }
+        .sw.dk { background: var(--dim); }
+        .sw.grid-bg { position: relative; }
+        .sw.grid-bg::after {
+            content: ''; position: absolute; inset: 0; pointer-events: none;
+            background:
+                linear-gradient(rgba(0,255,170,.02) 1px, transparent 1px),
+                linear-gradient(90deg, rgba(0,255,170,.02) 1px, transparent 1px);
+            background-size: 48px 48px;
+        }
+
+        .ct {
+            padding: clamp(68px, 9.5vw, 144px) clamp(24px, 6vw, 92px);
+            max-width: 1360px; margin: 0 auto; position: relative; z-index: 1;
+        }
+
+        .slabel {
+            font-family: 'Space Mono', monospace; font-size: 9px; letter-spacing: .3em;
+            text-transform: uppercase; color: var(--accent); margin-bottom: 60px;
+            display: flex; align-items: center; gap: 20px;
+        }
+        .slabel::after {
+            content: ''; display: block; flex: 1; height: 1px; background: var(--border);
+        }
+
+        /* ── MANIFESTO ── */
+        .manifesto-text {
+            font-size: clamp(24px, 3.8vw, 64px); font-weight: 500;
+            line-height: 1.24; letter-spacing: -.025em; max-width: 1020px;
+        }
+        .manifesto-text em { font-style: normal; color: var(--accent); }
+
+        /* ── ARCHITECTURE (terminal) ── */
+        .arch-split {
+            display: grid; grid-template-columns: 1fr 1fr; gap: 80px; align-items: start;
+        }
+        .arch-left h2 {
+            font-size: clamp(32px, 4.5vw, 72px); font-weight: 700;
+            letter-spacing: -.04em; line-height: 1.05; margin-bottom: 28px;
+        }
+        .arch-left p {
+            font-size: clamp(14px, 1.4vw, 17px); color: var(--mid); line-height: 1.8;
             margin-bottom: 20px;
         }
+        .arch-left p em { font-style: normal; color: var(--fg); }
 
-        .text-content {
-            width: 100%;
-            margin-bottom: 50px;
+        .terminal {
+            border: 1px solid var(--border);
+            background: #000;
+        }
+        .tbar {
+            display: flex; align-items: center; gap: 6px;
+            padding: 10px 16px; border-bottom: 1px solid var(--border);
+            background: #0a0a0a;
+        }
+        .tdot2 { width: 9px; height: 9px; border-radius: 50%; background: rgba(255,255,255,.1); }
+        .ttitle {
+            font-family: 'Space Mono', monospace; font-size: 10px;
+            color: var(--mid); letter-spacing: .08em; margin-left: 10px;
+        }
+        .tbody {
+            padding: 20px 20px 24px; font-family: 'Space Mono', monospace;
+            font-size: 10.5px; line-height: 1.85; color: #aaa; overflow-x: auto;
+            white-space: pre;
+        }
+        .tbody .a { color: var(--accent); }
+        .tbody .p { color: var(--accent2); }
+        .tbody .d { color: #444; }
+        .tbody .w { color: #ddd; }
+        .cursor-blink {
+            display: inline-block; width: 7px; height: 13px;
+            background: var(--accent); vertical-align: middle;
+            animation: blink 1s step-end infinite;
+        }
+        @keyframes blink { 0%,100% { opacity: 1; } 50% { opacity: 0; } }
+
+        /* ── CAPABILITIES ── */
+        .cap-header {
+            display: flex; justify-content: space-between; align-items: flex-end;
+            margin-bottom: 64px; gap: 40px;
+        }
+        .cap-header h2 {
+            font-size: clamp(34px, 5.5vw, 92px); font-weight: 700;
+            letter-spacing: -.04em; line-height: 1;
+        }
+        .cap-header p {
+            font-size: clamp(13px, 1.3vw, 16px); color: var(--mid);
+            max-width: 300px; line-height: 1.75; text-align: right; flex-shrink: 0;
+        }
+        .cap-list { display: grid; }
+        .cap-item {
+            display: grid; grid-template-columns: 68px 1fr 40px;
+            gap: 28px; align-items: start;
+            padding: 40px 0; border-bottom: 1px solid var(--border);
+            transition: transform .15s, background .25s;
+            transform-style: preserve-3d;
+        }
+        .cap-item:first-child { border-top: 1px solid var(--border); }
+        .cap-num {
+            font-family: 'Space Mono', monospace; font-size: 11px; color: var(--mid); padding-top: 4px;
+        }
+        .cap-body h3 {
+            font-size: clamp(19px, 2.4vw, 36px); font-weight: 600;
+            letter-spacing: -.025em; margin-bottom: 12px; transition: color .25s;
+        }
+        .cap-item:hover .cap-body h3 { color: var(--accent); }
+        .cap-body p { font-size: clamp(13px, 1.3vw, 16px); color: var(--mid); max-width: 600px; line-height: 1.78; }
+        .cap-tag {
+            font-family: 'Space Mono', monospace; font-size: 9px; letter-spacing: .12em;
+            text-transform: uppercase; color: rgba(0,255,170,.4);
+            border: 1px solid rgba(0,255,170,.15); padding: 3px 8px;
+            display: inline-block; margin-top: 12px;
+        }
+        .cap-arrow {
+            font-size: 20px; color: rgba(255,255,255,.1); padding-top: 4px;
+            transition: color .25s, transform .25s;
+        }
+        .cap-item:hover .cap-arrow { color: var(--accent); transform: translate(4px,-4px); }
+
+        /* ── STATS ── */
+        .stats-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(190px, 1fr)); gap: 52px 36px; }
+        .stat-item { display: flex; flex-direction: column; gap: 10px; }
+        .stat-num {
+            font-size: clamp(50px, 8.5vw, 100px); font-weight: 700;
+            letter-spacing: -.05em; color: var(--accent); line-height: 1;
+        }
+        .stat-label { font-size: clamp(12px, 1.2vw, 14px); color: var(--mid); line-height: 1.6; max-width: 200px; }
+
+        /* ── HUMAN-AI ── */
+        .human-ai-grid {
+            display: grid; grid-template-columns: 1fr 1fr; gap: 80px; align-items: start;
+        }
+        .human-ai-right h2 {
+            font-size: clamp(32px, 4.5vw, 72px); font-weight: 700;
+            letter-spacing: -.04em; line-height: 1.05; margin-bottom: 32px;
+        }
+        .human-ai-right p {
+            font-size: clamp(14px, 1.4vw, 17px); color: var(--mid); line-height: 1.82; margin-bottom: 20px;
+        }
+        .human-ai-right p em { font-style: normal; color: var(--fg); }
+        .spectrum {
+            margin-top: 40px; border: 1px solid var(--border); padding: 24px;
+        }
+        .spectrum-label {
+            font-family: 'Space Mono', monospace; font-size: 9px; letter-spacing: .2em;
+            text-transform: uppercase; color: var(--mid); margin-bottom: 16px;
+        }
+        .spectrum-bar {
+            height: 4px; background: linear-gradient(to right, var(--accent2), var(--accent));
+            margin-bottom: 10px; position: relative;
+        }
+        .spectrum-bar::after {
+            content: ''; position: absolute; top: -4px; left: 30%;
+            width: 12px; height: 12px; border-radius: 50%;
+            background: var(--fg); border: 2px solid var(--bg);
+            box-shadow: 0 0 12px var(--accent);
+        }
+        .spectrum-ends {
+            display: flex; justify-content: space-between;
+            font-family: 'Space Mono', monospace; font-size: 8px;
+            letter-spacing: .12em; text-transform: uppercase; color: var(--mid);
+        }
+        .hai-items { display: flex; flex-direction: column; gap: 0; }
+        .hai-item {
+            display: flex; gap: 20px; padding: 24px 0;
+            border-bottom: 1px solid var(--border); align-items: start;
+        }
+        .hai-item:first-child { border-top: 1px solid var(--border); }
+        .hai-icon {
+            font-family: 'Space Mono', monospace; font-size: 11px; color: var(--accent);
+            width: 36px; flex-shrink: 0; padding-top: 2px;
+        }
+        .hai-body h4 {
+            font-size: clamp(14px, 1.5vw, 18px); font-weight: 600;
+            letter-spacing: -.015em; margin-bottom: 8px;
+        }
+        .hai-body p { font-size: clamp(12px, 1.2vw, 14px); color: var(--mid); line-height: 1.7; }
+
+        /* ── SERVICES ── */
+        .services-title {
+            font-size: clamp(34px, 5.5vw, 92px); font-weight: 700;
+            letter-spacing: -.04em; line-height: 1; margin-bottom: 68px;
+        }
+        .service-list { display: grid; }
+        .service-item {
+            display: flex; justify-content: space-between; align-items: center;
+            padding: 26px 0; border-bottom: 1px solid var(--border);
+            transition: padding-left .3s; cursor: default;
+        }
+        .service-item:first-child { border-top: 1px solid var(--border); }
+        .service-item:hover { padding-left: 18px; }
+        .svc-l { display: flex; gap: 26px; align-items: center; }
+        .svc-n { font-family: 'Space Mono', monospace; font-size: 10px; color: var(--mid); width: 26px; flex-shrink: 0; }
+        .svc-name {
+            font-size: clamp(17px, 2.4vw, 32px); font-weight: 500;
+            letter-spacing: -.02em; transition: color .25s;
+        }
+        .service-item:hover .svc-name { color: var(--accent); }
+        .svc-tag {
+            font-family: 'Space Mono', monospace; font-size: 9px; letter-spacing: .12em;
+            text-transform: uppercase; color: var(--mid);
+            border: 1px solid var(--border); padding: 5px 12px; flex-shrink: 0;
         }
 
-        .text-content h2,
-        .text-content p {
-            text-align: left;
+        /* ── STACK ── */
+        .stack-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 1px; background: var(--border); }
+        @media (max-width: 768px) { .stack-grid { grid-template-columns: repeat(2, 1fr); } }
+        @media (max-width: 480px) { .stack-grid { grid-template-columns: 1fr; } }
+        .stack-cell {
+            background: var(--bg); padding: 32px 28px;
+            transition: background .25s;
         }
+        .sw.dk .stack-cell { background: var(--dim); }
+        .stack-cell:hover { background: rgba(0,255,170,.03); }
+        .stack-cat {
+            font-family: 'Space Mono', monospace; font-size: 9px; letter-spacing: .22em;
+            text-transform: uppercase; color: var(--accent); margin-bottom: 20px;
+        }
+        .stack-items { display: flex; flex-direction: column; gap: 8px; }
+        .stack-item {
+            font-size: clamp(12px, 1.2vw, 14px); color: var(--mid); line-height: 1.5;
+            display: flex; align-items: center; gap: 10px;
+        }
+        .stack-item::before { content: '—'; color: rgba(0,255,170,.25); font-size: 10px; }
 
-        .text-content h2 {
-            padding-top: 20px;
+        /* ── APPROACH ── */
+        .approach-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 88px; align-items: start; }
+        .approach-left h2 {
+            font-size: clamp(38px, 5vw, 80px); font-weight: 700;
+            letter-spacing: -.04em; line-height: 1.05;
         }
+        .approach-right { display: flex; flex-direction: column; gap: 44px; }
+        .approach-item h4 {
+            font-family: 'Space Mono', monospace; font-size: 9px; letter-spacing: .22em;
+            text-transform: uppercase; color: var(--accent); margin-bottom: 10px;
+        }
+        .approach-item p { font-size: clamp(13px, 1.3vw, 16px); color: var(--mid); line-height: 1.78; }
 
-        .footer {
-            width: 100%;
-            background-color: #333;
-            color: white;
-            text-align: center;
-            padding: 10px 0;
+        /* ── CONTACT ── */
+        .contact-title {
+            font-size: clamp(38px, 6.5vw, 112px); font-weight: 700;
+            letter-spacing: -.04em; line-height: 1; margin-bottom: 64px;
         }
+        .contact-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 12px; }
+        .contact-card {
+            padding: 30px; display: flex; flex-direction: column; gap: 10px;
+            text-decoration: none; color: var(--fg);
+            background: linear-gradient(#0b0b0b,#0b0b0b) padding-box,
+                        linear-gradient(135deg, rgba(0,255,170,.15), transparent 50%, rgba(0,255,170,.05)) border-box;
+            border: 1px solid transparent;
+            transition: background .3s;
+        }
+        .contact-card:hover {
+            background: linear-gradient(rgba(0,255,170,.04),rgba(0,255,170,.04)) padding-box,
+                        linear-gradient(135deg, rgba(0,255,170,.5), transparent 50%, rgba(0,255,170,.2)) border-box;
+        }
+        .cc-label {
+            font-family: 'Space Mono', monospace; font-size: 9px;
+            letter-spacing: .22em; text-transform: uppercase; color: var(--mid);
+        }
+        .cc-value { font-size: clamp(12px, 1.4vw, 16px); font-weight: 500; word-break: break-all; }
 
-        .fas {
-            padding-right: 16px;
+        /* ── FOOTER ── */
+        footer {
+            border-top: 1px solid var(--border);
+            padding: 32px clamp(24px, 6vw, 92px);
+            display: flex; justify-content: space-between; align-items: center; gap: 24px;
         }
+        .fcopy { font-family: 'Space Mono', monospace; font-size: 9px; color: var(--mid); letter-spacing: .04em; }
+        .fbrand { font-family: 'Space Mono', monospace; font-size: 9px; color: var(--mid); }
+        .fbrand span { color: var(--accent); }
 
-        ul {
-            list-style-type: lower-greek;
-        }
+        /* ── ANIMATIONS ── */
+        @keyframes fadeUp { from { opacity: 0; transform: translateY(28px); } to { opacity: 1; transform: none; } }
+        @keyframes tickerScroll { from { transform: translateX(0); } to { transform: translateX(-50%); } }
+        @keyframes scrollPulse { 0%,100% { opacity: .22; } 50% { opacity: .9; } }
 
-        a {
-            color: #000;
-            text-decoration: none;
-            border-bottom: 1px dotted;
-            border-bottom-color: #000;
+        /* ── REVEAL ── */
+        .reveal {
+            opacity: 0; transform: translateY(38px);
+            transition: opacity .8s cubic-bezier(.16,1,.3,1), transform .8s cubic-bezier(.16,1,.3,1);
         }
-        /* Responsive design for mobile */
-        @media screen and (max-width: 600px) {
-            .content {
-                width: 90%;
-            }
+        .reveal.vis { opacity: 1; transform: none; }
+
+        /* ── MOBILE ── */
+        @media (max-width: 960px) {
+            .arch-split, .human-ai-grid, .approach-grid { grid-template-columns: 1fr; gap: 48px; }
+            .cap-header { flex-direction: column; align-items: flex-start; }
+            .cap-header p { text-align: left; }
+            .contact-grid { grid-template-columns: 1fr; }
+        }
+        @media (max-width: 640px) {
+            nav { padding: 18px 20px; }
+            .cap-item { grid-template-columns: 42px 1fr; }
+            .cap-arrow { display: none; }
+            .svc-tag { display: none; }
+            footer { flex-direction: column; text-align: center; }
+            .tbody { font-size: 9px; }
         }
     </style>
 </head>
 <body>
-    <div class="content">
-        <img class="logo" src="semenov.svg" alt="Semenov.ai">
-        <div class="text-content">
-            <h2><i class="fas fa-user"></i>About us</h2>
-            <p>Semenov.ai is a leading provider of advanced AI solutions and software development services. We harness the power of artificial intelligence to help businesses transform their operations and achieve new levels of efficiency.</p>
 
-            <h2><i class="fas fa-rocket"></i>Our belief</h2>
-            <p>We believe that AI has the potential to revolutionize various industries, from healthcare and finance to retail and transportation. This belief fuels our commitment to staying at the forefront of AI technology, constantly updating our knowledge and skills to provide the most cutting-edge solutions.</p>
+<!-- NAV -->
+<nav id="nav">
+    <a href="#" class="nav-logo">semenov<span>.ai</span></a>
+    <a href="#contact" class="nav-link">Get in touch</a>
+</nav>
 
-            <h2><i class="fas fa-cog"></i>Our services</h2>
-            <p>Aside from AI, we also offer a range of software development services. Whether you need a full-fledged web application, a mobile app, or custom software, we have the expertise to deliver on time and within budget.</p>
+<!-- HERO -->
+<div id="hero">
+    <canvas id="canvas-bg"></canvas>
+    <div class="scanline"></div>
+    <div class="hero-content">
+        <p class="hero-label">Belgrade &nbsp;·&nbsp; Global &nbsp;·&nbsp; AI-First</p>
+        <h1 class="hero-title">
+            <span class="ln1 glitch" data-text="AUTONOMOUS">AUTONOMOUS</span>
+            <span class="ln2">AI AGENTS.</span>
+        </h1>
+        <p class="hero-sub">Intelligent systems that perceive, reason, plan, and act — continuously, autonomously, at scale.</p>
+    </div>
+    <div class="scroll-hint">
+        <div class="scroll-line"></div>
+        <span>Scroll</span>
+    </div>
+</div>
 
-            <h2><i class="fas fa-road"></i>Our approach</h2>
-            <p>We take pride in our customer-centric approach. Our focus is not just on delivering a product or service, but on providing a solution that truly adds value to your business. We strive to build long-term partnerships with our clients, providing ongoing support and improvements as their business evolves.</p>
+<!-- TICKER -->
+<div class="ticker">
+    <div class="ticker-track" id="ticker-track">
+        <span class="ticker-item">Agentic AI <span class="tdot">◆</span></span>
+        <span class="ticker-item">Multi-Agent Systems <span class="tdot">◆</span></span>
+        <span class="ticker-item">LLM Orchestration <span class="tdot">◆</span></span>
+        <span class="ticker-item">Autonomous Workflows <span class="tdot">◆</span></span>
+        <span class="ticker-item">Cognitive Automation <span class="tdot">◆</span></span>
+        <span class="ticker-item">ReAct Paradigm <span class="tdot">◆</span></span>
+        <span class="ticker-item">Chain-of-Thought <span class="tdot">◆</span></span>
+        <span class="ticker-item">RLAIF Alignment <span class="tdot">◆</span></span>
+        <span class="ticker-item">Vector Memory <span class="tdot">◆</span></span>
+        <span class="ticker-item">Tool Use &amp; Planning <span class="tdot">◆</span></span>
+        <span class="ticker-item">MCTS Rollouts <span class="tdot">◆</span></span>
+        <span class="ticker-item">RAG Systems <span class="tdot">◆</span></span>
+        <span class="ticker-item">Emergent Intelligence <span class="tdot">◆</span></span>
+        <span class="ticker-item">Agentic AI <span class="tdot">◆</span></span>
+        <span class="ticker-item">Multi-Agent Systems <span class="tdot">◆</span></span>
+        <span class="ticker-item">LLM Orchestration <span class="tdot">◆</span></span>
+        <span class="ticker-item">Autonomous Workflows <span class="tdot">◆</span></span>
+        <span class="ticker-item">Cognitive Automation <span class="tdot">◆</span></span>
+        <span class="ticker-item">ReAct Paradigm <span class="tdot">◆</span></span>
+        <span class="ticker-item">Chain-of-Thought <span class="tdot">◆</span></span>
+        <span class="ticker-item">RLAIF Alignment <span class="tdot">◆</span></span>
+        <span class="ticker-item">Vector Memory <span class="tdot">◆</span></span>
+        <span class="ticker-item">Tool Use &amp; Planning <span class="tdot">◆</span></span>
+        <span class="ticker-item">MCTS Rollouts <span class="tdot">◆</span></span>
+        <span class="ticker-item">RAG Systems <span class="tdot">◆</span></span>
+        <span class="ticker-item">Emergent Intelligence <span class="tdot">◆</span></span>
+    </div>
+</div>
 
-            <h2><i class="fas fa-landmark"></i>Our experience</h2>
-            <p>Operating from Belgrade, we have worked with clients across the globe. Our international experience enables us to understand and cater to the diverse needs of businesses from different sectors and regions.</p>
+<!-- MANIFESTO -->
+<div class="sw">
+    <div class="ct">
+        <div class="slabel">/ Manifesto</div>
+        <p class="manifesto-text reveal">
+            The paradigm has shifted. We are past the era of <em>reactive</em> software — systems that wait, that answer, that execute only what they're told. The next generation of intelligent systems is <em>agentic</em>: perceiving context, forming hypotheses, orchestrating tools, and driving outcomes through continuous closed-loop reasoning. Not chatbots. Not automation scripts. <em>Cognitive architectures</em> that work.
+        </p>
+    </div>
+</div>
 
-            <h2><i class="fas fa-atom"></i>Our promise</h2>
-            <p>Semenov.ai is more than a technology provider. We are your partner in driving innovation and success in this digital age.</p>
+<!-- COGNITIVE ARCHITECTURE -->
+<div class="sw grid-bg">
+    <div class="ct">
+        <div class="slabel">/ Architecture</div>
+        <div class="arch-split">
+            <div class="arch-left reveal">
+                <h2>The Cognitive<br>Stack.</h2>
+                <p>Every agent we build is grounded in a layered cognitive architecture — from low-level perception and tokenization through multi-step reasoning, long-term memory consolidation, and calibrated action execution. Nothing is a black box.</p>
+                <p>Our agents implement the <em>ReAct paradigm</em> (Reasoning + Acting) extended with <em>Tree-of-Thoughts</em> exploration via Monte Carlo Tree Search. Long-horizon tasks are decomposed through chain-of-thought scratchpads, with self-critique loops enforcing Constitutional AI alignment at every decision boundary.</p>
+                <p>Memory is not a context window — it is a multi-tier system spanning <em>working memory</em> (KV-cache, 128k context), <em>episodic memory</em> (HNSW-indexed vector stores with cross-encoder re-ranking), and <em>semantic memory</em> (knowledge graphs with entity-level relation extraction). Agents remember what matters. They forget what doesn't.</p>
+            </div>
+            <div class="reveal">
+                <div class="terminal">
+                    <div class="tbar">
+                        <span class="tdot2"></span><span class="tdot2"></span><span class="tdot2"></span>
+                        <span class="ttitle">agent_cognitive_stack.yaml</span>
+                    </div>
+                    <div class="tbody"><span class="d">// SEMENOV.AI — AGENT ARCHITECTURE v2.4
+// ─────────────────────────────────────────</span>
 
-            <h2><i class="fas fa-address-book"></i>Contact us</h2>
-            <p>For further information about our services or to discuss a project, feel free to get in touch with us: <br>
-                <ul>
-                    <li>Email: <a href="mailto:vladislav.semenov@gmail.com">vladislav.semenov@gmail.com</a></li>
-                    <li>Phone: <a href="tel:+381629233920">+381 62 9233920</a></li>
-                    <li>Telegram: <a href="https://t.me/VladSemenov">@VladSemenov</a></li>
-                </ul>
-                We look forward to hearing from you.</p>
+<span class="a">[LAYER 0]</span>  <span class="w">PERCEPTION & GROUNDING</span>
+           <span class="d">├─</span> Tokenization:    <span class="p">BPE + byte-fallback (vocab 128k)</span>
+           <span class="d">├─</span> Embedding:       <span class="p">text-embedding-3-large, 3072-dim</span>
+           <span class="d">└─</span> Multi-modal:     <span class="p">ViT-L/14 (vision), Whisper-v3 (speech)</span>
+
+<span class="a">[LAYER 1]</span>  <span class="w">WORKING MEMORY</span>
+           <span class="d">├─</span> Context window:  <span class="p">128k tokens, grouped-query attention</span>
+           <span class="d">├─</span> KV-cache:        <span class="p">INT8-quantized, 16-head attention</span>
+           <span class="d">└─</span> Prefill:         <span class="p">dynamic chunking, priority queuing</span>
+
+<span class="a">[LAYER 2]</span>  <span class="w">REASONING ENGINE</span>
+           <span class="d">├─</span> Paradigm:        <span class="p">ReAct (Reason + Act loops)</span>
+           <span class="d">├─</span> Decomposition:   <span class="p">Chain-of-Thought + scratchpad</span>
+           <span class="d">├─</span> Search:          <span class="p">Tree-of-Thoughts, MCTS b=4 d=6</span>
+           <span class="d">└─</span> Self-critique:   <span class="p">Constitutional AI reflection</span>
+
+<span class="a">[LAYER 3]</span>  <span class="w">LONG-TERM MEMORY</span>
+           <span class="d">├─</span> Episodic:        <span class="p">FAISS / pgvector, HNSW indexing</span>
+           <span class="d">├─</span> Retrieval:       <span class="p">BM25 + dense hybrid, cross-encoder</span>
+           <span class="d">└─</span> Consolidation:   <span class="p">async summarization, importance Δ</span>
+
+<span class="a">[LAYER 4]</span>  <span class="w">ACTION SPACE</span>
+           <span class="d">├─</span> Tool registry:   <span class="p">typed schemas (JSON Schema / OpenAPI 3.1)</span>
+           <span class="d">├─</span> Code execution:  <span class="p">sandboxed Python (Firecracker VMs)</span>
+           <span class="d">├─</span> Planning:        <span class="p">MCTS + LLM rollouts, reward shaping</span>
+           <span class="d">└─</span> Connectors:      <span class="p">REST, GraphQL, gRPC, WebSockets</span>
+
+<span class="a">[LAYER 5]</span>  <span class="w">ALIGNMENT & SAFETY</span>
+           <span class="d">├─</span> RLAIF:           <span class="p">reward model ensemble, KL-div penalty</span>
+           <span class="d">├─</span> Uncertainty:     <span class="p">conformal prediction, ensemble disagr.</span>
+           <span class="d">└─</span> Escalation:      <span class="p">P(failure) > ε → human handoff</span>
+
+<span class="d">$ agent.run(objective)</span>  <span class="cursor-blink"></span></div>
+                </div>
+            </div>
         </div>
     </div>
-    <div class="footer">
-        <p>© 2023 Vladislav Semenov PR Beograd. All Rights Reserved.</p>
+</div>
+
+<!-- CAPABILITIES -->
+<div class="sw">
+    <div class="ct">
+        <div class="slabel">/ Capabilities</div>
+        <div class="cap-header">
+            <h2 class="reveal">Intelligence,<br>Orchestrated.</h2>
+            <p class="reveal">We design and build systems where AI is the core architecture — not a feature layer bolted on top of existing software.</p>
+        </div>
+        <div class="cap-list">
+            <div class="cap-item reveal" data-tilt>
+                <span class="cap-num">01</span>
+                <div class="cap-body">
+                    <h3>Autonomous Agents</h3>
+                    <p>AI agents that operate independently through continuous perception-reasoning-action loops. They decompose ambiguous objectives into executable subplans, invoke tools, handle failure modes through retry-and-replan heuristics, and converge on correct outcomes without human intervention. Built on the ReAct paradigm with MCTS-based lookahead for long-horizon task completion.</p>
+                    <span class="cap-tag">ReAct / MCTS / Tool Use</span>
+                </div>
+                <span class="cap-arrow">↗</span>
+            </div>
+            <div class="cap-item reveal" data-tilt>
+                <span class="cap-num">02</span>
+                <div class="cap-body">
+                    <h3>Multi-Agent Systems</h3>
+                    <p>Directed acyclic task graphs (DAGs) of specialized subagents — each fine-tuned or prompted for a narrow cognitive role — coordinated by an orchestrator through structured message-passing protocols. Collective intelligence emerges through specialization and delegation, not monolithic models. Reduces token overhead by 60–80% vs. naive chain architectures while improving correctness on compositional tasks.</p>
+                    <span class="cap-tag">DAG Orchestration / Message Passing / Specialization</span>
+                </div>
+                <span class="cap-arrow">↗</span>
+            </div>
+            <div class="cap-item reveal" data-tilt>
+                <span class="cap-num">03</span>
+                <div class="cap-body">
+                    <h3>LLM Orchestration & Pipelines</h3>
+                    <p>Production-grade pipeline architectures chaining foundation models (GPT-5.4, Claude Opus 4.6, Gemini 3.1 Pro, Llama 4 Maverick) with external APIs, persistent memory systems, code interpreters, and retrieval engines. Streaming inference with latency budgeting, parallel fan-out with result aggregation, and observable execution traces for debugging and audit.</p>
+                    <span class="cap-tag">LangGraph / Streaming / Observability</span>
+                </div>
+                <span class="cap-arrow">↗</span>
+            </div>
+            <div class="cap-item reveal" data-tilt>
+                <span class="cap-num">04</span>
+                <div class="cap-body">
+                    <h3>Retrieval-Augmented Generation</h3>
+                    <p>Enterprise-grade RAG systems with hybrid retrieval (BM25 sparse + dense embedding, cosine similarity), cross-encoder re-ranking for precision, and agentic query decomposition. Indexes any corpus — documents, codebases, databases, wikis — making institutional knowledge instantly queryable by agents with sub-100ms P95 retrieval latency.</p>
+                    <span class="cap-tag">HNSW / Hybrid Retrieval / Cross-Encoder Re-ranking</span>
+                </div>
+                <span class="cap-arrow">↗</span>
+            </div>
+            <div class="cap-item reveal" data-tilt>
+                <span class="cap-num">05</span>
+                <div class="cap-body">
+                    <h3>Agentic Software Products</h3>
+                    <p>Full-stack products where AI is the foundation, not a feature. Applications with persistent agent sessions, multi-turn context management, user-delegated task execution, and real-time streaming interfaces. From architecture to deployment — containerized, observable, and horizontally scalable on AWS Bedrock, Vercel Edge, or on-premise Kubernetes clusters.</p>
+                    <span class="cap-tag">Full-Stack / Persistent Sessions / K8s</span>
+                </div>
+                <span class="cap-arrow">↗</span>
+            </div>
+        </div>
     </div>
+</div>
+
+<!-- STATS -->
+<div class="sw dk">
+    <div class="ct">
+        <div class="slabel">/ Impact</div>
+        <div class="stats-grid">
+            <div class="stat-item reveal">
+                <span class="stat-num" data-count="10" data-suffix="×">0×</span>
+                <span class="stat-label">Faster time to market with AI-augmented development and agentic code generation</span>
+            </div>
+            <div class="stat-item reveal">
+                <span class="stat-num" data-count="80" data-suffix="%">0%</span>
+                <span class="stat-label">Of repetitive knowledge-work tasks are fully automatable by current LLM-based agents</span>
+            </div>
+            <div class="stat-item reveal">
+                <span class="stat-num" data-count="24" data-suffix="/7">0/7</span>
+                <span class="stat-label">Autonomous operation — agents execute continuously without oversight or manual triggers</span>
+            </div>
+            <div class="stat-item reveal">
+                <span class="stat-num">∞</span>
+                <span class="stat-label">Parallelism — spawn hundreds of agent instances simultaneously, each working independently</span>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- HUMAN × AGENT -->
+<div class="sw">
+    <div class="ct">
+        <div class="slabel">/ Human–Agent Interface</div>
+        <div class="human-ai-grid">
+            <div class="hai-items">
+                <div class="hai-item reveal">
+                    <span class="hai-icon">Σ</span>
+                    <div class="hai-body">
+                        <h4>Adaptive Autonomy Spectrum</h4>
+                        <p>Agent independence is dynamically calibrated to task criticality and epistemic uncertainty. Below a configurable confidence threshold ε, agents execute fully autonomously. Above it, they surface decision points with full reasoning traces, confidence intervals, and recommended actions — preserving human judgment at high-stakes nodes.</p>
+                    </div>
+                </div>
+                <div class="hai-item reveal">
+                    <span class="hai-icon">∂</span>
+                    <div class="hai-body">
+                        <h4>Observable Reasoning Chains</h4>
+                        <p>Every agent decision is explainable: a logged sequence of retrieved contexts, tool invocations, intermediate scratchpad reasoning steps, and calibrated posterior confidence scores. Humans maintain epistemic oversight without cognitive overhead — you see exactly why the agent did what it did, at any granularity.</p>
+                    </div>
+                </div>
+                <div class="hai-item reveal">
+                    <span class="hai-icon">λ</span>
+                    <div class="hai-body">
+                        <h4>Delegated Cognitive Offloading</h4>
+                        <p>Cognitive load redistribution through structured task delegation. Humans define objectives and constraint boundaries; agents handle the full combinatorial search space of subtask execution. The result is a distributed cognition system — human judgment at the strategic layer, machine execution at the tactical layer.</p>
+                    </div>
+                </div>
+                <div class="hai-item reveal">
+                    <span class="hai-icon">∇</span>
+                    <div class="hai-body">
+                        <h4>Continuous Feedback Integration</h4>
+                        <p>Agent behavior is shaped by RLAIF (Reinforcement Learning from AI Feedback) and direct human preference signals. Constitutional constraints are enforced at inference time via reflection loops. Reward model ensembles prevent Goodhart's Law pathologies — agents optimize for genuine outcomes, not proxy metrics.</p>
+                    </div>
+                </div>
+            </div>
+            <div class="human-ai-right reveal">
+                <h2>Human ×<br>Agent<br>Symbiosis.</h2>
+                <p>Agents don't replace human cognition — they <em>amplify</em> it. The human brings judgment, values, domain intuition, and moral agency. The agent brings tireless execution, perfect recall, infinite parallelism, and combinatorial search across possibility spaces no human could traverse in a lifetime.</p>
+                <p>This is not automation. Automation executes predefined procedures. <em>Agentic AI</em> reasons about novel situations, selects appropriate tools dynamically, recovers from unexpected failures, and improves its own strategy through in-context learning — all within a single task session.</p>
+                <p>We engineer the interface between these two cognitive regimes — calibrating the autonomy gradient, designing the feedback loops, and building the oversight infrastructure that makes human-agent collaboration <em>trustworthy at scale</em>.</p>
+                <div class="spectrum">
+                    <div class="spectrum-label">Autonomy Gradient — current optimal range</div>
+                    <div class="spectrum-bar"></div>
+                    <div class="spectrum-ends">
+                        <span>Full Human Control</span>
+                        <span>Full Autonomy</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- SERVICES -->
+<div class="sw dk">
+    <div class="ct">
+        <div class="slabel">/ Services</div>
+        <h2 class="services-title reveal">What We<br>Deliver.</h2>
+        <div class="service-list">
+            <div class="service-item reveal">
+                <div class="svc-l"><span class="svc-n">01</span><span class="svc-name">Custom AI Agent Development</span></div>
+                <span class="svc-tag">Core</span>
+            </div>
+            <div class="service-item reveal">
+                <div class="svc-l"><span class="svc-n">02</span><span class="svc-name">Multi-Agent System Architecture</span></div>
+                <span class="svc-tag">Advanced</span>
+            </div>
+            <div class="service-item reveal">
+                <div class="svc-l"><span class="svc-n">03</span><span class="svc-name">LLM Integration &amp; Fine-tuning</span></div>
+                <span class="svc-tag">Deep Tech</span>
+            </div>
+            <div class="service-item reveal">
+                <div class="svc-l"><span class="svc-n">04</span><span class="svc-name">RAG &amp; Knowledge Retrieval Systems</span></div>
+                <span class="svc-tag">Data</span>
+            </div>
+            <div class="service-item reveal">
+                <div class="svc-l"><span class="svc-n">05</span><span class="svc-name">Agentic Web Applications</span></div>
+                <span class="svc-tag">Product</span>
+            </div>
+            <div class="service-item reveal">
+                <div class="svc-l"><span class="svc-n">06</span><span class="svc-name">AI Strategy &amp; Technical Consulting</span></div>
+                <span class="svc-tag">Strategy</span>
+            </div>
+            <div class="service-item reveal">
+                <div class="svc-l"><span class="svc-n">07</span><span class="svc-name">Agent Alignment &amp; Safety Engineering</span></div>
+                <span class="svc-tag">Alignment</span>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- TECHNOLOGY STACK -->
+<div class="sw">
+    <div class="ct">
+        <div class="slabel">/ Technology</div>
+        <h2 class="services-title reveal">The Stack.</h2>
+        <div class="stack-grid">
+            <div class="stack-cell reveal">
+                <div class="stack-cat">Foundation Models</div>
+                <div class="stack-items">
+                    <span class="stack-item">GPT-5.4 Pro / Thinking (OpenAI)</span>
+                    <span class="stack-item">Claude Opus 4.6 / Sonnet 4.6</span>
+                    <span class="stack-item">Gemini 3.1 Pro (Google)</span>
+                    <span class="stack-item">Llama 4 Maverick (on-premise)</span>
+                    <span class="stack-item">Mistral Large 3</span>
+                </div>
+            </div>
+            <div class="stack-cell reveal">
+                <div class="stack-cat">Orchestration</div>
+                <div class="stack-items">
+                    <span class="stack-item">LangGraph (stateful DAGs)</span>
+                    <span class="stack-item">AutoGen v0.4</span>
+                    <span class="stack-item">CrewAI (role-based)</span>
+                    <span class="stack-item">Semantic Kernel</span>
+                    <span class="stack-item">Custom DAG engines</span>
+                </div>
+            </div>
+            <div class="stack-cell reveal">
+                <div class="stack-cat">Vector &amp; Memory</div>
+                <div class="stack-items">
+                    <span class="stack-item">Pinecone (production)</span>
+                    <span class="stack-item">pgvector / Supabase</span>
+                    <span class="stack-item">Weaviate (multi-modal)</span>
+                    <span class="stack-item">FAISS (research)</span>
+                    <span class="stack-item">Qdrant</span>
+                </div>
+            </div>
+            <div class="stack-cell reveal">
+                <div class="stack-cat">Infrastructure</div>
+                <div class="stack-items">
+                    <span class="stack-item">AWS Bedrock / Lambda</span>
+                    <span class="stack-item">Vercel Edge Runtime</span>
+                    <span class="stack-item">Kubernetes + Helm</span>
+                    <span class="stack-item">Firecracker microVMs</span>
+                    <span class="stack-item">Docker + Compose</span>
+                </div>
+            </div>
+            <div class="stack-cell reveal">
+                <div class="stack-cat">Languages</div>
+                <div class="stack-items">
+                    <span class="stack-item">Python (ML / orchestration)</span>
+                    <span class="stack-item">TypeScript (web / APIs)</span>
+                    <span class="stack-item">Rust (performance-critical)</span>
+                    <span class="stack-item">SQL (data pipelines)</span>
+                </div>
+            </div>
+            <div class="stack-cell reveal">
+                <div class="stack-cat">Observability</div>
+                <div class="stack-items">
+                    <span class="stack-item">LangSmith (tracing)</span>
+                    <span class="stack-item">Weights &amp; Biases</span>
+                    <span class="stack-item">OpenTelemetry</span>
+                    <span class="stack-item">Prometheus / Grafana</span>
+                    <span class="stack-item">Datadog APM</span>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- APPROACH -->
+<div class="sw dk">
+    <div class="ct">
+        <div class="slabel">/ How We Work</div>
+        <div class="approach-grid">
+            <div class="approach-left">
+                <h2 class="reveal">How<br>We<br>Think.</h2>
+            </div>
+            <div class="approach-right">
+                <div class="approach-item reveal">
+                    <h4>Agent-First Architecture</h4>
+                    <p>Every engagement begins with one question: where can an agent take cognitive ownership? We design systems with autonomy as the default — AI is not bolted onto existing software, it is the foundation from which everything is built. This inversion changes what's possible.</p>
+                </div>
+                <div class="approach-item reveal">
+                    <h4>Empirical Iteration</h4>
+                    <p>Agent performance is measured, not assumed. We instrument every system with structured evals, latency budgets, and precision/recall metrics specific to your task distribution. Improvement is empirical and continuous — not a one-time deployment.</p>
+                </div>
+                <div class="approach-item reveal">
+                    <h4>Production from Day One</h4>
+                    <p>We don't build demos. Every prototype is architected for production: observability, error handling, graceful degradation, and horizontal scalability are requirements, not afterthoughts. You get a system you can run, monitor, and trust — in weeks, not quarters.</p>
+                </div>
+                <div class="approach-item reveal">
+                    <h4>Founder-Level Partnership</h4>
+                    <p>Every client works directly with the founder. No account managers. No briefing chains. You get a technical partner who understands your business model, questions your assumptions, and builds systems that serve your actual goals — not a requirements document.</p>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- CONTACT -->
+<div class="sw" id="contact">
+    <div class="ct">
+        <div class="slabel">/ Contact</div>
+        <h2 class="contact-title reveal">Let's Build<br>the Future.</h2>
+        <div class="contact-grid">
+            <a href="mailto:vladislav.semenov@gmail.com" class="contact-card reveal">
+                <span class="cc-label">Email</span>
+                <span class="cc-value">vladislav.semenov@gmail.com</span>
+            </a>
+            <a href="tel:+381629233920" class="contact-card reveal">
+                <span class="cc-label">Phone</span>
+                <span class="cc-value">+381 62 923 3920</span>
+            </a>
+            <a href="https://t.me/VladSemenov" class="contact-card reveal">
+                <span class="cc-label">Telegram</span>
+                <span class="cc-value">@VladSemenov</span>
+            </a>
+        </div>
+    </div>
+</div>
+
+<!-- FOOTER -->
+<footer>
+    <span class="fcopy">© 2026 Vladislav Semenov PR Beograd. All Rights Reserved.</span>
+    <span class="fbrand">semenov<span>.ai</span></span>
+</footer>
+
+<script>
+// ── NAV ──
+const nav = document.getElementById('nav');
+window.addEventListener('scroll', () => nav.classList.toggle('scrolled', scrollY > 60), { passive: true });
+
+// ── CANVAS 3D HERO (zero dependencies) ──
+(function () {
+    const canvas = document.getElementById('canvas-bg');
+    const ctx = canvas.getContext('2d');
+    const isMob = window.innerWidth < 768;
+    let W, H;
+
+    function resize() {
+        W = canvas.width  = canvas.offsetWidth;
+        H = canvas.height = canvas.offsetHeight;
+    }
+    resize();
+
+    // ── 3D math ──
+    const rX = (p, a) => { const c=Math.cos(a),s=Math.sin(a); return [p[0], p[1]*c-p[2]*s, p[1]*s+p[2]*c]; };
+    const rY = (p, a) => { const c=Math.cos(a),s=Math.sin(a); return [p[0]*c+p[2]*s, p[1], -p[0]*s+p[2]*c]; };
+    const rZ = (p, a) => { const c=Math.cos(a),s=Math.sin(a); return [p[0]*c-p[1]*s, p[0]*s+p[1]*c, p[2]]; };
+
+    function pr(p, S) {                     // perspective project
+        const fov = 900;
+        const d = fov / (fov + p[2]*S + S*3);
+        return [W/2 + p[0]*S*d, H/2 + p[1]*S*d, d, p[2]];
+    }
+
+    // ── Icosahedron ──
+    const φ = (1+Math.sqrt(5))/2, nl = Math.sqrt(1+φ*φ);
+    const IV = [[0,1,φ],[0,-1,φ],[0,1,-φ],[0,-1,-φ],[1,φ,0],[-1,φ,0],
+                [1,-φ,0],[-1,-φ,0],[φ,0,1],[φ,0,-1],[-φ,0,1],[-φ,0,-1]]
+               .map(v => v.map(x => x/nl));
+    const IE = [];
+    for (let i=0;i<12;i++) for (let j=i+1;j<12;j++) {
+        const d=Math.hypot(IV[i][0]-IV[j][0],IV[i][1]-IV[j][1],IV[i][2]-IV[j][2]);
+        if (d<1.12) IE.push([i,j]);
+    }
+
+    // ── Ring point generators ──
+    const mkRing = (r,n) => Array.from({length:n},(_,i) => {
+        const a=i/n*Math.PI*2; return [r*Math.cos(a), r*Math.sin(a), 0];
+    });
+    const ring1 = mkRing(1.58, 110);
+    const ring2 = mkRing(1.32, 92);
+
+    // ── Particle clouds ──
+    const mkCloud = (n,rMin,rMax) => Array.from({length:n}, () => {
+        const φ2=Math.acos(2*Math.random()-1), θ=Math.random()*Math.PI*2;
+        const r=rMin+Math.random()*(rMax-rMin);
+        return [r*Math.sin(φ2)*Math.cos(θ), r*Math.sin(φ2)*Math.sin(θ), r*Math.cos(φ2)];
+    });
+    const outerPts = mkCloud(isMob?220:580, 1.35, 1.85);
+    const innerPts = mkCloud(isMob?70:180, 0, 0.72);
+
+    // ── Neural net particles (2D floating, connecting) ──
+    const NN_COUNT = isMob ? 80 : 160;
+    const MAX_DIST = 200;
+    const nnPts = Array.from({length: NN_COUNT}, () => ({
+        x: Math.random(), y: Math.random(),   // normalised 0-1
+        vx: (Math.random()-.5)*.0004,
+        vy: (Math.random()-.5)*.0004,
+    }));
+
+    // ── Mouse ──
+    let mx=0, my=0, tmx=0, tmy=0;
+    let mouseX=-9999, mouseY=-9999;
+    window.addEventListener('mousemove', e => {
+        tmx=(e.clientX/W-.5)*2; tmy=-(e.clientY/H-.5)*2;
+        mouseX=e.clientX; mouseY=e.clientY;
+    }, {passive:true});
+    window.addEventListener('mouseleave', () => { mouseX=-9999; mouseY=-9999; }, {passive:true});
+
+    // ── Clamp helper ──
+    const cl = v => Math.max(0, Math.min(1, v)).toFixed(2);
+
+    function frame(t) {
+        ctx.clearRect(0,0,W,H);
+        const S = Math.min(W,H) * (isMob ? .185 : .215);
+
+        mx+=(tmx-mx)*.038; my+=(tmy-my)*.038;
+
+        const a1x = t*.13+my*.35, a1y = t*.20+mx*.35;
+        const a2x = -t*.17,       a2y = -t*.10;
+        const rt  = t*.09;
+
+        const tf1 = p => rY(rX(p, a1x), a1y);
+        const tf2 = p => rY(rX(p, a2x), a2y);
+
+        // outer particles
+        for (const p of outerPts) {
+            const v=tf1(p), [sx,sy,d,z]=pr(v,S);
+            const α=cl((z+1.8)/3.6*.52+.1);
+            ctx.beginPath(); ctx.arc(sx,sy,d*.7,0,Math.PI*2);
+            ctx.fillStyle=`rgba(0,255,170,${α})`; ctx.fill();
+        }
+
+        // inner particles (purple)
+        for (const p of innerPts) {
+            const v=tf2(p), [sx,sy,d]=pr(v,S);
+            ctx.beginPath(); ctx.arc(sx,sy,d*.42,0,Math.PI*2);
+            ctx.fillStyle='rgba(123,97,255,0.42)'; ctx.fill();
+        }
+
+        // icosahedron 1 (outer)
+        for (const [i,j] of IE) {
+            const a=tf1(IV[i]), b=tf1(IV[j]);
+            const [ax,ay,,az]=pr(a,S), [bx,by,,bz]=pr(b,S);
+            const α=cl(((az+bz)/2+1)/2*.55+.18);
+            ctx.beginPath(); ctx.moveTo(ax,ay); ctx.lineTo(bx,by);
+            ctx.strokeStyle=`rgba(0,255,170,${α})`; ctx.lineWidth=1.2; ctx.stroke();
+        }
+
+        // icosahedron 2 (inner, 0.65×)
+        for (const [i,j] of IE) {
+            const a=tf2(IV[i].map(x=>x*.65)), b=tf2(IV[j].map(x=>x*.65));
+            const [ax,ay,,az]=pr(a,S), [bx,by,,bz]=pr(b,S);
+            const α=cl(((az+bz)/2+1)/2*.65+.22);
+            ctx.beginPath(); ctx.moveTo(ax,ay); ctx.lineTo(bx,by);
+            ctx.strokeStyle=`rgba(0,255,170,${α})`; ctx.lineWidth=1.6; ctx.stroke();
+        }
+
+        // ring 1 — green, tilted ~51°, slowly spins
+        const r1 = ring1.map(p => tf1(rZ(rX(p, Math.PI/3.5), rt)));
+        for (let i=0;i<r1.length;i++) {
+            const [ax,ay,,az]=pr(r1[i],S), [bx,by]=pr(r1[(i+1)%r1.length],S);
+            const α=cl((az+1.58)/3.16*.33+.07);
+            ctx.beginPath(); ctx.moveTo(ax,ay); ctx.lineTo(bx,by);
+            ctx.strokeStyle=`rgba(0,255,170,${α})`; ctx.lineWidth=1.1; ctx.stroke();
+        }
+
+        // ring 2 — purple, different tilt, opposite spin
+        const r2 = ring2.map(p => tf1(rZ(rX(rZ(p, Math.PI/5), -Math.PI/4), -rt*.75)));
+        for (let i=0;i<r2.length;i++) {
+            const [ax,ay,,az]=pr(r2[i],S), [bx,by]=pr(r2[(i+1)%r2.length],S);
+            const α=cl((az+1.32)/2.64*.28+.06);
+            ctx.beginPath(); ctx.moveTo(ax,ay); ctx.lineTo(bx,by);
+            ctx.strokeStyle=`rgba(123,97,255,${α})`; ctx.lineWidth=.9; ctx.stroke();
+        }
+
+        // ── Neural net particles ──
+        for (const p of nnPts) {
+            // mouse repulsion
+            const dx = p.x*W - mouseX, dy = p.y*H - mouseY;
+            const md = Math.sqrt(dx*dx + dy*dy);
+            if (md < 110) { p.vx += dx/md*.00018; p.vy += dy/md*.00018; }
+            // damping + speed cap
+            p.vx *= .992; p.vy *= .992;
+            const sp = Math.sqrt(p.vx*p.vx+p.vy*p.vy);
+            if (sp > .0012) { p.vx *= .0012/sp; p.vy *= .0012/sp; }
+            p.x += p.vx; p.y += p.vy;
+            if (p.x<0||p.x>1) { p.vx*=-1; p.x=Math.max(0,Math.min(1,p.x)); }
+            if (p.y<0||p.y>1) { p.vy*=-1; p.y=Math.max(0,Math.min(1,p.y)); }
+        }
+        // connections
+        for (let i=0;i<nnPts.length;i++) {
+            for (let j=i+1;j<nnPts.length;j++) {
+                const dx=(nnPts[i].x-nnPts[j].x)*W, dy=(nnPts[i].y-nnPts[j].y)*H;
+                const d=Math.sqrt(dx*dx+dy*dy);
+                if (d<MAX_DIST) {
+                    const α=((1-d/MAX_DIST)*.65).toFixed(2);
+                    ctx.beginPath();
+                    ctx.moveTo(nnPts[i].x*W, nnPts[i].y*H);
+                    ctx.lineTo(nnPts[j].x*W, nnPts[j].y*H);
+                    ctx.strokeStyle=`rgba(0,255,170,${α})`; ctx.lineWidth=1; ctx.stroke();
+                }
+            }
+        }
+        // dots
+        for (const p of nnPts) {
+            ctx.beginPath(); ctx.arc(p.x*W, p.y*H, 1.5, 0, Math.PI*2);
+            ctx.fillStyle='rgba(0,255,170,0.85)'; ctx.fill();
+        }
+
+        requestAnimationFrame(ts => frame(ts*.001));
+    }
+
+    requestAnimationFrame(ts => frame(ts*.001));
+    window.addEventListener('resize', resize, {passive:true});
+})();
+
+// ── 3D CARD TILT ──
+document.querySelectorAll('[data-tilt]').forEach(el => {
+    el.addEventListener('mousemove', e => {
+        const r = el.getBoundingClientRect();
+        const x = (e.clientX - r.left) / r.width  - .5;
+        const y = (e.clientY - r.top)  / r.height - .5;
+        el.style.transition = 'transform .1s';
+        el.style.transform = `perspective(900px) rotateY(${x * 7}deg) rotateX(${-y * 3.5}deg) scale(1.01)`;
+    });
+    el.addEventListener('mouseleave', () => {
+        el.style.transition = 'transform .55s cubic-bezier(.16,1,.3,1)';
+        el.style.transform = '';
+    });
+});
+
+// ── SCROLL REVEAL ──
+const ro = new IntersectionObserver(entries => {
+    entries.forEach(e => {
+        if (!e.isIntersecting) return;
+        const sibs = [...e.target.parentElement.querySelectorAll('.reveal:not(.vis)')];
+        const idx = sibs.indexOf(e.target);
+        setTimeout(() => e.target.classList.add('vis'), Math.max(0, idx * 75));
+        ro.unobserve(e.target);
+    });
+}, { threshold: .1 });
+document.querySelectorAll('.reveal').forEach(el => ro.observe(el));
+
+// ── ANIMATED COUNTERS ──
+function runCounter(el) {
+    const target = +el.dataset.count, suf = el.dataset.suffix || '';
+    const dur = 1700, t0 = performance.now();
+    (function step(now) {
+        const p = Math.min((now - t0) / dur, 1);
+        el.textContent = Math.round((1 - Math.pow(1-p, 3)) * target) + suf;
+        if (p < 1) requestAnimationFrame(step);
+    })(t0);
+}
+const co = new IntersectionObserver(es => {
+    es.forEach(e => { if (e.isIntersecting) { runCounter(e.target); co.unobserve(e.target); } });
+}, { threshold: .5 });
+document.querySelectorAll('[data-count]').forEach(el => co.observe(el));
+</script>
 </body>
 </html>
