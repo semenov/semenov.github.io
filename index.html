@@ -475,9 +475,9 @@
             .cap-arrow { display: none; }
             .svc-tag { display: none; }
             footer { flex-direction: column; text-align: center; }
-            /* terminal: scroll horizontally inside its box, never push page */
-            .terminal { max-width: 100%; overflow: hidden; }
-            .tbody { font-size: 9px; overflow-x: auto; }
+            /* terminal: wrap long lines on mobile */
+            .terminal { max-width: 100%; }
+            .tbody { font-size: 9px; white-space: pre-wrap; word-break: break-all; overflow-x: hidden; }
             /* bigger body text on mobile */
             .manifesto-text { font-size: clamp(20px, 5.5vw, 64px); }
             .cap-body p, .approach-item p, .hai-body p { font-size: 15px; }
