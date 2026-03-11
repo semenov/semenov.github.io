@@ -105,7 +105,7 @@
         .hero-title .ln1 { display: block; color: var(--fg); opacity: 0; animation: fadeUp .8s .5s forwards; }
         .hero-title .ln2 { display: block; color: var(--accent); opacity: 0; animation: fadeUp .8s .7s forwards; }
         .hero-sub {
-            font-size: clamp(15px, 1.8vw, 20px); font-weight: 300; color: var(--mid);
+            font-size: clamp(15px, 1.8vw, 20px); font-weight: 300; color: #aaa;
             max-width: 540px; margin: 0 auto 48px; line-height: 1.8;
             opacity: 0; animation: fadeUp .8s .9s forwards;
         }
@@ -1009,6 +1009,14 @@ window.addEventListener('scroll', () => nav.classList.toggle('scrolled', scrollY
 
         const tf1 = p => rY(rX(p, a1x), a1y);
         const tf2 = p => rY(rX(p, a2x), a2y);
+
+        // dark vignette behind sphere
+        const vgr = ctx.createRadialGradient(W/2,H/2, 0, W/2,H/2, S*2.2);
+        vgr.addColorStop(0,   'rgba(4,4,4,0.82)');
+        vgr.addColorStop(0.6, 'rgba(4,4,4,0.55)');
+        vgr.addColorStop(1,   'rgba(4,4,4,0)');
+        ctx.fillStyle = vgr;
+        ctx.fillRect(0,0,W,H);
 
         // outer particles
         for (const p of outerPts) {
